@@ -1,9 +1,13 @@
 # Secrets / env
+.env
+*.env
+.env.*
 **/.env
 **/*.env
 **/acme.json
 **/*token*
 **/*secret*
+!.env.example
 
 # Runtime / logs
 **/logs/
@@ -16,4 +20,8 @@
 # Python
 **/__pycache__/
 **/*.pyc
+*.py[cod]
+.venv/
+venv/
+.idea/
 
