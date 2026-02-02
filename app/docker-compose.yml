@@ -20,9 +20,12 @@ services:
 
 
   backend:
-    build:
-      context: ./backend
-    image: site_backend:1.0
+    
+    # build:
+    #   context: ./backend
+    # image: site_backend:1.0
+    # container_name: site_backend
+    image: ghcr.io/masoud-mh/homelab-backend:${BACKEND_TAG:-latest}
     container_name: site_backend
     restart: unless-stopped
     networks:
