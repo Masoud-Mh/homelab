@@ -1,0 +1,77 @@
+services:
+  traefik:
+    image: traefik:v3.6.7
+    container_name: traefik
+    restart: unless-stopped
+
+    ports:
+      # LAN-only HTTP (bind to your LAN IP, not all interfaces)
+      - "80:80"
+
+    command:
+      - "--configFile=/etc/traefik/traefik.yml"
+
+
+    labels:
+      - "traefik.enable=true"
+
+      # Router: only match when Host is traefik.local AND path is /dashboard or /api
+      # - "traefik.http.routers.traefik.rule=(Host(`traefik.local`) || Host(`traefik.masoud-mh.com`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.traefik.rule=(Host(`traefik.local`) || Host(`traefik.masoud-mh.com`)) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
+      - "traefik.http.routers.traefik.entrypoints=web"
+
+      # Service: route to Traefik's internal API/dashboard service
+      - "traefik.http.routers.traefik.service=api@internal"
+
+      # Middleware: Basic Auth protection
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_USERS:?set TRAEFIK_DASHBOARD_USERS in .env}"
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+
+
+    volumes:
+      # Read-only access to Docker socket so Traefik can discover containers
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro
+
+    networks:
+      - proxy
+
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+
+      # Define the Traefik "service" explicitly (what to forward to)
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+
+      # Router 1: whoami.local -> service whoami
+      - "traefik.http.routers.whoami.rule=Host(`whoami.local`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.routers.whoami.service=whoami"
+
+      # Router 2: whoami2.local -> same service whoami
+      - "traefik.http.routers.whoami2.rule=Host(`whoami2.local`)"
+      - "traefik.http.routers.whoami2.entrypoints=web"
+      - "traefik.http.routers.whoami2.service=whoami"
+
+  whoami_alt:
+    image: traefik/whoami
+    container_name: whoami_alt
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami_alt.rule=Host(`hello.local`)"
+      - "traefik.http.routers.whoami_alt.entrypoints=web"
+      - "traefik.http.services.whoami_alt.loadbalancer.server.port=80"
+
+
+
+networks:
+  proxy:
+    name: traefik_proxy

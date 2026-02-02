@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>site.local</title>
+    <style>
+      body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+      pre { padding: 1rem; border: 1px solid #ccc; overflow: auto; }
+    </style>
+  </head>
+  <body>
+    <h1>✅ Frontend is working (site.local)</h1>
+    <p>Now this page will call the backend at <code>https://api.masoud-mh.com</code>.</p>
+
+    <button id="btn">Call API</button>
+    <p id="status"></p>
+    <pre id="out"></pre>
+
+    <script>
+      const btn = document.getElementById("btn");
+      const status = document.getElementById("status");
+      const out = document.getElementById("out");
+
+      btn.addEventListener("click", async () => {
+        status.textContent = "Calling api.site.local ...";
+        out.textContent = "";
+        try {
+          const res = await fetch("https://api.masoud-mh.com/");
+          const text = await res.text();
+          status.textContent = "✅ Response received:";
+          out.textContent = text;
+        } catch (e) {
+          status.textContent = "❌ Request failed (likely CORS or network):";
+          out.textContent = String(e);
+        }
+      });
+    </script>
+  </body>
+</html>

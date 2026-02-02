@@ -1,0 +1,19 @@
+# Secrets / env
+**/.env
+**/*.env
+**/acme.json
+**/*token*
+**/*secret*
+
+# Runtime / logs
+**/logs/
+**/*.log
+
+# OS/editor
+.DS_Store
+.vscode/
+
+# Python
+**/__pycache__/
+**/*.pyc
+
