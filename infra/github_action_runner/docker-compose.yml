@@ -1,0 +1,23 @@
+services:
+  github-runner:
+    init: true
+    stop_signal: SIGTERM
+    stop_grace_period: 90s  
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DOCKER_GID: ${DOCKER_GID}
+    container_name: github-actions-runner
+    restart: unless-stopped
+    environment:
+      RUNNER_TOKEN: ${RUNNER_TOKEN}
+      GITHUB_REPO_URL: ${GITHUB_REPO_URL}
+      RUNNER_NAME: homelab-runner-1
+      RUNNER_LABELS: homelab,linux,docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner-config:/home/runner
+
+volumes:
+  runner-config:
