@@ -2,10 +2,10 @@ name: backend-ci
 
 on:
   push:
-    branches: [ "main" ]
-    tags: [ "v*" ]   # later: create release tags like v0.1.0
+    branches: ["main"]
+    tags: ["v*"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -13,16 +13,35 @@ permissions:
   packages: write
 
 jobs:
-  build-and-push:
+  pr-build:
+    name: PR build (no push)
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
+      - name: Build (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app/backend
+          file: ./app/backend/Dockerfile
+          push: false
+
+  build-and-push:
+    name: Build and push (trusted events)
+    if: github.event_name != 'pull_request'
+    runs-on: [self-hosted, homelab]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # For self-hosted we don't need QEMU unless you plan multi-arch builds later
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -47,9 +66,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          context: ./app/backend
+          file: ./app/backend/Dockerfile
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
