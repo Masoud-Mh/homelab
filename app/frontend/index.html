@@ -9,7 +9,7 @@
     </style>
   </head>
   <body>
-    <h1>✅ Frontend is working (site.local)</h1>
+    <h1>✅ Frontend is working (masoud-mh.com)</h1>
     <p>Now this page will call the backend at <code>https://api.masoud-mh.com</code>.</p>
 
     <button id="btn">Call API</button>
@@ -22,7 +22,7 @@
       const out = document.getElementById("out");
 
       btn.addEventListener("click", async () => {
-        status.textContent = "Calling api.site.local ...";
+        status.textContent = "Calling https://api.masoud-mh.com ...";
         out.textContent = "";
         try {
           const res = await fetch("https://api.masoud-mh.com/");
