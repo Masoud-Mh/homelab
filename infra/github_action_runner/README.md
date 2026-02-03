@@ -50,12 +50,12 @@ Use the provided script to unregister the runner from GitHub and clean up local 
 ./remove-runner.sh
 ```
 
-Before running the script, set `RUNNER_TOKEN` in `.env` to the **remove token** from:
+Before running the script, set `RUNNER_REMOVE_TOKEN` in `.env` to the **remove token** from:
 **Repo Settings > Actions > Runners > New self-hosted runner (remove token)**.
 
 Notes:
 - Remove tokens expire quickly and are not stored anywhere.
-- After removal, get a new registration token and update `.env` again before starting the runner.
+- After removal, get a new registration token and update `RUNNER_TOKEN` in `.env` before starting the runner.
 - This follows GitHub’s guidance exactly by explicitly running `./config.sh remove --token ...` inside the container.
 - Do not try to auto-remove the runner on container shutdown without a token. That either forces long-term storage of a sensitive token (bad) or fails most of the time. Manual removal is the correct, production-style approach.
 
