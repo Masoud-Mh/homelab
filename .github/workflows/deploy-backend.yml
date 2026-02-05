@@ -19,9 +19,6 @@ jobs:
     environment: production
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
       - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
@@ -29,9 +26,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Deploy backend
+      - name: Deploy backend (from server working copy)
         env:
           BACKEND_TAG: ${{ inputs.backend_tag }}
         run: |
-          cd app
-          ./deploy-backend.sh
+          cd /data/repos/homelab-stack/app
+          BACKEND_TAG="${BACKEND_TAG}" ./deploy-backend.sh
