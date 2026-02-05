@@ -18,6 +18,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - runner-config:/home/runner
+      - /data/repos/homelab-stack/app/.env:/home/runner/_work/homelab/homelab/app/.env:ro
 
 volumes:
   runner-config:
