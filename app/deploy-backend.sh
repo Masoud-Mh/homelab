@@ -4,11 +4,16 @@ set -euo pipefail
 # Always run from the directory this script lives in
 cd "$(dirname "$0")"
 
+: "${BACKEND_TAG:?BACKEND_TAG is required (e.g. sha-xxxx, v0.1.0)}"
+
+
 COMPOSE_PROJECT_NAME=site
 export COMPOSE_PROJECT_NAME
 
 echo "Deploying backend..."
 echo "Current time: $(date -Is)"
+echo "Target image: ghcr.io/masoud-mh/homelab-backend:${BACKEND_TAG}"
+
 
 # Pull the image referenced by compose (uses BACKEND_TAG if set, otherwise latest)
 echo "Pulling backend image..."
