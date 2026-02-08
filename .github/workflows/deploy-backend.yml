@@ -35,7 +35,7 @@ jobs:
           if [ -n "${{ inputs.backend_tag }}" ]; then
             echo "value=${{ inputs.backend_tag }}" >> "$GITHUB_OUTPUT"
           else
-            echo "value=sha-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+            echo "value=sha-${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Deploy backend

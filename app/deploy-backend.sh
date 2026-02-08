@@ -7,8 +7,7 @@ cd "$(dirname "$0")"
 : "${BACKEND_TAG:?BACKEND_TAG is required (e.g. sha-xxxx, v0.1.0)}"
 
 
-COMPOSE_PROJECT_NAME=site
-export COMPOSE_PROJECT_NAME
+export COMPOSE_PROJECT_NAME=site
 
 echo "Deploying backend..."
 echo "Current time: $(date -Is)"
