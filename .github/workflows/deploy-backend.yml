@@ -38,6 +38,19 @@ jobs:
             echo "value=sha-${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Show deployment plan
+        run: |
+          echo "Requested tag input: '${{ inputs.backend_tag }}'"
+          echo "Resolved tag to deploy: '${{ steps.tag.outputs.value }}'"
+          echo "Target image: ghcr.io/${{ github.repository_owner }}/homelab-backend:${{ steps.tag.outputs.value }}"
+
+      - name: Show current backend image (before)
+        run: |
+          docker inspect -f '{{.Config.Image}}' site-backend-1 2>/dev/null || true
+          docker inspect -f '{{.Config.Image}}' site_backend 2>/dev/null || true
+
+
+
       - name: Deploy backend
         env:
           BACKEND_TAG: ${{ steps.tag.outputs.value }}
