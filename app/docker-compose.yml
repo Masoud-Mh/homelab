@@ -1,7 +1,7 @@
 services:
   frontend:
     image: nginx:alpine
-    container_name: site_frontend
+    # container_name: site_frontend
     restart: unless-stopped
     networks:
       - traefik_proxy
