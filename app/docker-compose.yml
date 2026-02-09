@@ -6,7 +6,7 @@ services:
     networks:
       - traefik_proxy
     volumes:
-      - ./frontend:/usr/share/nginx/html:ro
+      - /srv/site/frontend:/usr/share/nginx/html:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.site.rule=Host(`site.local`) || Host(`masoud-mh.com`) || Host(`www.masoud-mh.com`)"
