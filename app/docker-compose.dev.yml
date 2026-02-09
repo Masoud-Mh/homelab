@@ -1,0 +1,19 @@
+services:
+  frontend:
+    # In dev, do not use Traefik or the external traefik network
+    networks: []
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - "8080:80"
+
+  backend:
+    networks: []
+    labels:
+      - "traefik.enable=false"
+    ports:
+      - "8081:8000"
+    env_file:
+      - .env.dev
+    volumes:
+      - /srv/site-dev/frontend:/usr/share/nginx/html:ro
