@@ -208,6 +208,12 @@
       }
     }
     checkApi();
+    setInterval(() => {
+      if (!document.hidden) {
+        checkApi();
+      }
+    }, 30_000);
+
   </script>
 </body>
 </html>
