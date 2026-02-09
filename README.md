@@ -40,19 +40,29 @@ Docker services
 ## 📁 Repository Structure
 
 ```
-
 homelab-stack/
+├── .github/
+│   └── workflows/
+│       ├── backend-ci.yml          # CI: build & push to GHCR
+│       └── deploy-backend.yml      # Deployment: manual trigger, self-hosted runner
+│
 ├── infra/
 │   ├── traefik/
 │   │   ├── docker-compose.yml
 │   │   └── config/
 │   │       └── traefik.yml
-│   └── cloudflared/
+│   ├── cloudflared/
+│   │   ├── docker-compose.yml
+│   │   └── .env.example
+│   └── github_action_runner/       # Self-hosted Actions runner setup
+│       ├── Dockerfile
 │       ├── docker-compose.yml
-│       └── .env.example
+│       ├── README.md
+│       └── remove-runner.sh
 │
 ├── app/
 │   ├── docker-compose.yml
+│   ├── deploy-backend.sh           # Deployment script (used by CI/CD)
 │   ├── frontend/
 │   │   └── index.html
 │   └── backend/
@@ -61,7 +71,6 @@ homelab-stack/
 │       └── requirements.txt
 │
 └── README.md
-
 ```
 
 ---
@@ -150,24 +159,50 @@ CORS_ORIGINS=[https://masoud-mh.com,https://www.masoud-mh.com](https://masoud-mh
 
 ## ▶️ How to Run
 
-### 1️⃣ Start Traefik
+### Local Manual Setup
+
+#### 1️⃣ Start Traefik
 ```bash
 cd infra/traefik
 sudo docker compose up -d
-````
+```
 
-### 2️⃣ Start Application Stack
-
+#### 2️⃣ Start Application Stack
 ```bash
 cd app
 sudo docker compose up -d
 ```
 
-### 3️⃣ Start Cloudflare Tunnel
-
+#### 3️⃣ Start Cloudflare Tunnel
 ```bash
 cd infra/cloudflared
 sudo docker compose up -d
+```
+
+### Automated Deployment (Production)
+
+#### Prerequisites
+- Self-hosted GitHub Actions Runner installed and running on homelab (`infra/github_action_runner/`)
+- Push access to GitHub repo
+
+#### Deployment Steps
+
+1. **Push code to trigger CI:**
+   ```bash
+   git push origin main
+   ```
+   → `backend-ci` workflow builds and pushes image to GHCR
+
+2. **Deploy to homelab:**
+   - Go to GitHub repo → Actions → `deploy-backend` → Click "Run workflow"
+   - Optional: Specify a tag (e.g., `v1.0.0`) or leave blank for latest main commit
+   - Runner pulls image and restarts backend container
+
+**Example workflow:**
+```
+Feature branch pushed → PR opened → backend-ci validates build ✓
+PR reviewed and merged → Pushed to main → backend-ci builds & pushes to GHCR
+Manual: Click "Run workflow" → deploy-backend pulls & restarts container
 ```
 
 ---
@@ -205,17 +240,44 @@ curl https://api.masoud-mh.com/healthz
 
 ---
 
+## 🚀 CI/CD Pipeline
+
+### GitHub Actions Workflows
+
+#### `backend-ci` (build-and-push)
+- **Triggers**: Push to `main`, version tags (`v*`), or Pull Requests
+- **PR jobs**: Validates Docker build (no push to registry)
+- **Release jobs**: Builds and pushes image to GHCR with automatic tagging:
+  - `latest` (only for main branch)
+  - Branch and tag names
+  - Git SHA-based versions
+
+**Image location**: `ghcr.io/Masoud-Mh/homelab-backend`
+
+#### `deploy-backend` (automated deployment)
+- **Trigger**: Manual via GitHub UI (workflow_dispatch)
+- **Runner**: Self-hosted runner on homelab (requires GitHub Actions Runner setup)
+- **Environment**: Production
+- **Accepts**: Optional tag input (defaults to latest main commit)
+- **Actions**: Pulls image from GHCR and restarts backend container
+
+### Self-Hosted Runner
+Located in `infra/github_action_runner/`:
+- Runs on homelab server
+- Pulls images from GHCR
+- Executes deployment scripts with local Docker access
+- See [GitHub Actions Runner README](infra/github_action_runner/README.md)
+
+---
+
 ## 🚀 Roadmap
 
 Planned next steps:
 
-* GitHub Actions:
-
-  * Build backend image
-  * Push to GitHub Container Registry (GHCR)
-* Automated deployment to homelab
-* Environment separation (dev / prod)
-* Observability (metrics & logs)
+* Observability (metrics & logs with Prometheus/Grafana)
+* Multi-environment support (staging / production separation)
+* Database integration & migrations
+* Monitoring and alerting
 
 ---
 
