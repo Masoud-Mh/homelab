@@ -4,8 +4,8 @@
 Configure autonomous agent operation for this repository with memory-first workflows. (COMPLETED)
 
 ## In-progress focus
+- Hook runtime hardening complete: wrapper-based execution avoids dependency on global Python modules.
 - Begin roadmap execution using configured custom agents and prompts.
-- Track frontend and technical-debt progress in memory files after each batch.
 
 ## Next actions
 1. Start planning with custom agent `homelab-planner`.

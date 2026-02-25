@@ -25,6 +25,16 @@ For autonomous/background runs, select a free model available in your Copilot pl
 - On session end, hook checks for `[MEMORY_UPDATED]` marker.
 - If missing, the session is blocked once and agent must update memory files before finishing.
 
+## Hook runtime resolution
+- Hook command now runs `scripts/ai-memory/run-memory-hook.sh`.
+- Runtime selection order:
+	1. project `.venv/bin/python`
+	2. `uv run --script` (from inline metadata in `hook_memory.py`)
+	3. `python3`
+	4. `python`
+- Optional setup for a project-local Python runtime:
+	- `./scripts/ai-memory/setup-hook-env.sh`
+
 ## Required end-of-task updates
 - `.ai/memory/active-context.md`
 - `.ai/memory/decisions.md`

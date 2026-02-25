@@ -3,28 +3,28 @@
     "SessionStart": [
       {
         "type": "command",
-        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "command": "./scripts/ai-memory/run-memory-hook.sh",
         "timeout": 20
       }
     ],
     "PreCompact": [
       {
         "type": "command",
-        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "command": "./scripts/ai-memory/run-memory-hook.sh",
         "timeout": 20
       }
     ],
     "SubagentStop": [
       {
         "type": "command",
-        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "command": "./scripts/ai-memory/run-memory-hook.sh",
         "timeout": 20
       }
     ],
     "Stop": [
       {
         "type": "command",
-        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "command": "./scripts/ai-memory/run-memory-hook.sh",
         "timeout": 20
       }
     ]
