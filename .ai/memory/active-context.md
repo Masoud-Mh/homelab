@@ -9,6 +9,7 @@ Implement frontend roadmap (React + Vite + TypeScript) in parity-first mode. (PH
 - API health polling implemented with `useEffect` cleanup and interval management.
 - Frontend deployment path added via `app/deploy-frontend.sh` (host-sync to `/srv/site/frontend`).
 - Frontend CI and manual CD workflows added in `.github/workflows/frontend-ci.yml` and `.github/workflows/deploy-frontend.yml`.
+- Follow-up TS diagnostics fix applied: `main.tsx` now uses named imports, and `tsconfig.node.json` handles `vite.config.ts` resolution.
 
 ## Next actions
 1. Rotate exposed local tokens manually (P0 security, still manual-guided).
