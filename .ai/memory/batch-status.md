@@ -7,8 +7,8 @@ Source: section 5 of `docs/project-current-state-report.md`
 - Validate and fix `docker-compose.dev.yml` overrides: COMPLETED
 
 ## P1
-- Introduce frontend toolchain + typed app structure: NOT STARTED
-- Add frontend build/deploy process aligned with existing style: NOT STARTED
+- Introduce frontend toolchain + typed app structure: COMPLETED
+- Add frontend build/deploy process aligned with existing style: COMPLETED
 
 ## P2
 - Remove or isolate whoami services from production Traefik compose: COMPLETED

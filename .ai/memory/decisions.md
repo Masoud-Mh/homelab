@@ -13,3 +13,7 @@
 - Audited AI setup: verified hook runtime robustness, memory protocol behavior, and configuration validity.
 - Fixed `app/docker-compose.dev.yml` by moving frontend volume mount from backend to frontend service.
 - Removed `whoami` and `whoami_alt` services from `infra/traefik/docker-compose.yml` to isolate production Traefik compose.
+- Frontend roadmap sequencing explicitly overridden by user: execute frontend first; keep P0 token rotation manual in parallel.
+- Production frontend rollout decision: keep existing host-sync model first (`/srv/site/frontend`), defer container/image rollout to later batch.
+- Frontend implementation baseline standardized on Vite React TS with strict TypeScript and `VITE_API_BASE_URL` env handling.
+- Deployment consistency decision: frontend CI/CD mirrors backend workflow style (manual `workflow_dispatch` deploy on self-hosted runner).

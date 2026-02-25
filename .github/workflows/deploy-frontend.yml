@@ -1,0 +1,35 @@
+name: deploy-frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to deploy (branch, tag, or SHA). Leave empty for default branch HEAD."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy frontend to homelab
+    runs-on: [self-hosted, homelab, deploy]
+    environment: production
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref != '' && inputs.ref || github.ref }}
+
+      - name: Show deployment plan
+        run: |
+          echo "Requested ref input: '${{ inputs.ref }}'"
+          echo "Effective ref: '${{ inputs.ref != '' && inputs.ref || github.ref }}'"
+          echo "Deploy script: app/deploy-frontend.sh"
+
+      - name: Deploy frontend
+        run: |
+          cd /data/repos/homelab-stack/app
+          ./deploy-frontend.sh
