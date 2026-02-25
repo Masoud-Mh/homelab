@@ -6,6 +6,8 @@ services:
       - "traefik.enable=false"
     ports:
       - "8080:80"
+    volumes:
+      - /srv/site-dev/frontend:/usr/share/nginx/html:ro
 
   backend:
     networks: []
@@ -15,5 +17,3 @@ services:
       - "8081:8000"
     env_file:
       - .env.dev
-    volumes:
-      - /srv/site-dev/frontend:/usr/share/nginx/html:ro

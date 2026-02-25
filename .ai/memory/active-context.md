@@ -1,18 +1,19 @@
 # Active Context
 
 ## Current objective
-Configure autonomous agent operation for this repository with memory-first workflows. (COMPLETED)
+Audit the AI-agent setup in this repository and verify correctness, safety, and operational reliability. (COMPLETED)
 
 ## In-progress focus
-- Hook runtime hardening complete: wrapper-based execution avoids dependency on global Python modules.
-- Begin roadmap execution using configured custom agents and prompts.
-- Reusable independent audit prompt added: `/audit-ai-setup`.
+- AI setup audit completed successfully.
+- Fixed `docker-compose.dev.yml` volume mount defect.
+- Removed `whoami` services from `infra/traefik/docker-compose.yml`.
 
 ## Next actions
-1. Start planning with custom agent `homelab-planner`.
-2. Run `/run-frontend-roadmap` (recommended initial scope: `phase=1`).
-3. Run `/run-techdebt-batches` (recommended initial scope: `batch=P0`).
-4. Run `/sync-memory` after each completed batch.
+1. Rotate exposed local tokens manually (P0).
+2. Start planning with custom agent `homelab-planner`.
+3. Run `/run-frontend-roadmap` (recommended initial scope: `phase=1`).
+4. Run `/run-techdebt-batches` (recommended initial scope: `batch=P1`).
+5. Run `/sync-memory` after each completed batch.
 
 ## Last updated
 2026-02-25

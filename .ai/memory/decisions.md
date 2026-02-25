@@ -10,3 +10,6 @@
 - Added uv-compatible script metadata (`uv run --script`) to `hook_memory.py` with `dependencies = []`.
 - Added `scripts/ai-memory/setup-hook-env.sh` for optional project-local `.venv` provisioning.
 - Added reusable slash prompt `.github/prompts/audit-ai-setup.prompt.md` for independent end-to-end AI setup audit in new sessions.
+- Audited AI setup: verified hook runtime robustness, memory protocol behavior, and configuration validity.
+- Fixed `app/docker-compose.dev.yml` by moving frontend volume mount from backend to frontend service.
+- Removed `whoami` and `whoami_alt` services from `infra/traefik/docker-compose.yml` to isolate production Traefik compose.
