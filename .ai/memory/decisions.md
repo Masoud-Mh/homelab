@@ -9,3 +9,4 @@
 - Replaced direct `python3` hook invocation with `scripts/ai-memory/run-memory-hook.sh` runtime resolver.
 - Added uv-compatible script metadata (`uv run --script`) to `hook_memory.py` with `dependencies = []`.
 - Added `scripts/ai-memory/setup-hook-env.sh` for optional project-local `.venv` provisioning.
+- Added reusable slash prompt `.github/prompts/audit-ai-setup.prompt.md` for independent end-to-end AI setup audit in new sessions.

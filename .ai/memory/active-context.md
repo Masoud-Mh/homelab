@@ -6,6 +6,7 @@ Configure autonomous agent operation for this repository with memory-first workf
 ## In-progress focus
 - Hook runtime hardening complete: wrapper-based execution avoids dependency on global Python modules.
 - Begin roadmap execution using configured custom agents and prompts.
+- Reusable independent audit prompt added: `/audit-ai-setup`.
 
 ## Next actions
 1. Start planning with custom agent `homelab-planner`.
