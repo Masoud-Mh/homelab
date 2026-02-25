@@ -1,0 +1,32 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "timeout": 20
+      }
+    ],
+    "PreCompact": [
+      {
+        "type": "command",
+        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "timeout": 20
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "timeout": 20
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 scripts/ai-memory/hook_memory.py",
+        "timeout": 20
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+# Decisions Log
+
+## 2026-02-25
+- Adopted workspace-native Copilot files: `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `.github/agents/*.agent.md`, `.github/prompts/*.prompt.md`.
+- Added hook-based memory enforcement with `scripts/ai-memory/hook_memory.py` and `.github/hooks/ai-memory.json`.
+- Enforced end-of-session memory marker `[MEMORY_UPDATED]` when `.ai/memory/enforce-memory-update.flag` exists.
+- Kept model selection generic to avoid locking to unavailable SKUs; require free Copilot-supported model choice at runtime.
+- Validated hook script syntax with `python3 -m py_compile` and smoke-tested SessionStart/Stop JSON output.

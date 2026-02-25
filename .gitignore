@@ -25,3 +25,6 @@
 venv/
 .idea/
 
+# AI runtime memory artifacts
+.ai/memory/runtime/
+
