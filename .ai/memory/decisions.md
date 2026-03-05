@@ -18,3 +18,4 @@
 - Frontend implementation baseline standardized on Vite React TS with strict TypeScript and `VITE_API_BASE_URL` env handling.
 - Deployment consistency decision: frontend CI/CD mirrors backend workflow style (manual `workflow_dispatch` deploy on self-hosted runner).
 - Follow-up diagnostics decision: use named imports from `react` and `react-dom/client`, and add `tsconfig.node.json` for `vite.config.ts` module resolution.
+- Deployment operations decision: keep a dedicated runbook in `docs/frontend-deploy-smoke-runbook.md` for repeatable frontend deploy, smoke checks, and rollback steps.

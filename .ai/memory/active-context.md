@@ -10,12 +10,14 @@ Implement frontend roadmap (React + Vite + TypeScript) in parity-first mode. (PH
 - Frontend deployment path added via `app/deploy-frontend.sh` (host-sync to `/srv/site/frontend`).
 - Frontend CI and manual CD workflows added in `.github/workflows/frontend-ci.yml` and `.github/workflows/deploy-frontend.yml`.
 - Follow-up TS diagnostics fix applied: `main.tsx` now uses named imports, and `tsconfig.node.json` handles `vite.config.ts` resolution.
+- Added deploy execution runbook: `docs/frontend-deploy-smoke-runbook.md` for workflow trigger, smoke checks, and rollback path.
 
 ## Next actions
 1. Rotate exposed local tokens manually (P0 security, still manual-guided).
-2. Run live deploy dry-run/production deploy via manual frontend workflow.
-3. After stable rollout, execute containerized/image-based frontend delivery batch.
-4. Continue technical debt batches from section 5 after frontend stabilization.
+2. Execute live deploy via manual frontend workflow using `ref=dev`.
+3. Run smoke test checklist from `docs/frontend-deploy-smoke-runbook.md`.
+4. After stable rollout, execute containerized/image-based frontend delivery batch.
+5. Continue technical debt batches from section 5 after frontend stabilization.
 
 ## Last updated
 2026-02-25
