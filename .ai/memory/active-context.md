@@ -19,5 +19,10 @@ Implement frontend roadmap (React + Vite + TypeScript) in parity-first mode. (PH
 4. After stable rollout, execute containerized/image-based frontend delivery batch.
 5. Continue technical debt batches from section 5 after frontend stabilization.
 
+## Ownership
+Primary developer/maintainer is now Claude Code (handoff from GitHub Copilot, 2026-06-17).
+Claude Code config in `.claude/` (agents, commands, settings hook). Native memory mirror at
+`~/.claude/projects/-data-repos-homelab-stack/memory/`; this `.ai/memory/` stays canonical.
+
 ## Last updated
-2026-02-25
+2026-06-17

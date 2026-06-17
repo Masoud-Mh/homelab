@@ -1,5 +1,13 @@
 # Decisions Log
 
+## 2026-06-17
+- Handed primary development/maintenance to Claude Code (from GitHub Copilot). Owner expects no re-briefing on project state per session.
+- Added Claude Code ownership scaffolding (committed `e20e4f4` on `dev`): `.claude/agents/` (deploy-operator, infra-reviewer, frontend-dev), `.claude/commands/` (stack-status, deploy-frontend, deploy-backend, smoke-test, sync-memory), `.claude/settings.json` (SessionStart+PreCompact hook → `scripts/ai-memory/run-memory-hook.sh`; read-only permission allowlist).
+- Populated Claude Code native memory at `~/.claude/projects/-data-repos-homelab-stack/memory/` mirroring durable facts; `.ai/memory/` remains canonical git-tracked state (bridged).
+- Installed `gh` CLI to `~/.local/bin` (v2.94.0; apt/sudo unavailable non-interactively); user authenticated (scopes: repo, workflow, write:packages).
+- Added `docs/credential-rotation-runbook.md` for P0 token rotation (manual; named to avoid `.gitignore` `**/*token*`/`**/*secret*`).
+- Kept legacy Copilot-era `.github/{agents,instructions,prompts}` and `copilot-instructions.md` for reference, not wired into Claude Code.
+
 ## 2026-02-25
 - Adopted workspace-native Copilot files: `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md`, `.github/agents/*.agent.md`, `.github/prompts/*.prompt.md`.
 - Added hook-based memory enforcement with `scripts/ai-memory/hook_memory.py` and `.github/hooks/ai-memory.json`.
