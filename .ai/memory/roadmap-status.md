@@ -1,6 +1,13 @@
-# Frontend Roadmap Status
+# Roadmap Status
 
-Source: `docs/frontend-react-vite-ts-roadmap.md`
+## Architecture remediation — source: `docs/architecture-roadmap.md`
+- Phase 0 (Session-limit awareness & governance): COMPLETED (2026-06-17)
+- Phase 1 (De-hardcode host paths): TODO
+- Phase 2 (Containerize frontend as OCI image): TODO
+- Phase 3 (Vitest + pytest harness): TODO
+- Phase 4 (K8s/Helm manifests): TODO — blocked on 1–3
+
+## Frontend roadmap — source: `docs/frontend-react-vite-ts-roadmap.md`
 
 - Phase 1 (Dev Foundation): COMPLETED
 - Phase 2 (Production Delivery): COMPLETED (host-sync baseline)

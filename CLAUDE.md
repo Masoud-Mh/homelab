@@ -74,6 +74,47 @@ These come from `AGENTS.md` and `.github/copilot-instructions.md` and apply to a
 - TypeScript runs strict; clean up `useEffect` side effects (see the polling/abort pattern in `ApiHealthBadge.tsx`). Env vars consumed by the frontend must be `VITE_`-prefixed.
 - Avoid destructive commands (`rm -rf`, `docker system prune -a`, force-push).
 
+## Session-limit awareness (Claude Max)
+
+This project auto-manages subscription usage so sessions don't crash into "session
+limit reached" mid-task. Tooling lives in `scripts/session-guard/` (substrate
+`check-usage.sh`, auto-sleep `wait-until-reset.sh`, hooks via `run-usage-hook.sh`, and a
+`session-guard` MCP server). The MCP server needs its deps: `npm install` in
+`scripts/session-guard/mcp/` once per machine (`node_modules` is gitignored).
+
+- **Check usage** at decision points: session start, **before spawning any subagent /
+  fan-out**, and between major tasks. Use the `session-guard` MCP `get_usage` tool (or
+  `scripts/session-guard/check-usage.sh`). SessionStart / PreToolUse(Task) /
+  UserPromptSubmit hooks also surface usage automatically.
+- **Reason adaptively — don't gate on fixed numbers.** Weigh: remaining session % AND
+  week %, the **model in use** (Opus burns far faster than Sonnet/Haiku — treat the same
+  % as more expensive on Opus), task size, and subagent fan-out (every subagent draws the
+  *same shared* budget). Defaults `warn 70% / critical 90%` are advisory inputs, not
+  hard gates.
+- **Decision rule.** If remaining headroom comfortably covers the planned work + fan-out,
+  proceed. If marginal, reduce fan-out, prefer a cheaper model, or split the task. If
+  near/at the limit such that the work can't finish, **persist state to
+  `.ai/memory/active-context.md`, then auto-sleep until reset and resume** — do not ask,
+  do not abandon.
+- **Auto-sleep mechanism.** Call the MCP `wait_for_reset` tool, or launch
+  `scripts/session-guard/wait-until-reset.sh` with `run_in_background: true` (foreground
+  `sleep` is blocked and tool timeouts cap at 10 min, so the waiter must be detached; the
+  harness re-invokes the session when it exits at reset). A 6h max-wait guardrail applies.
+  For multi-day weekly-window waits, use a scheduled wake instead and rely on
+  `.ai/memory/` to reconstruct state.
+- **Never** spin in foreground sleeps, block a hook (hooks advise only, ≤~15s), or exceed
+  the max-wait guardrail.
+- Authoritative source is `claude -p "/usage"`; `ccusage` JSON is the fallback (a 5h-block
+  proxy with no weekly view). `/usage` latency is variable, so a short cache and ccusage
+  fallback keep readings available. Run `/usage-check` for a human-readable status.
+
+## Architecture principles & roadmap
+
+All work — new and remediation — is held to [docs/architecture-principles.md](docs/architecture-principles.md)
+(microservices, scalability, Kubernetes readiness, environment-agnostic/containerized,
+test/validation). Phased remediation is tracked in
+[docs/architecture-roadmap.md](docs/architecture-roadmap.md).
+
 ## AI memory system
 
 This repo carries its own cross-session memory under `.ai/memory/` (separate from Claude Code's own memory). A SessionStart/Stop/PreCompact/SubagentStop hook (`.github/hooks/ai-memory.json` → `scripts/ai-memory/run-memory-hook.sh`) writes runtime context there. When doing substantial autonomous work, read `.ai/memory/active-context.md`, `decisions.md`, `roadmap-status.md`, and `batch-status.md` first, and update them when done. `runtime/` artifacts are gitignored.

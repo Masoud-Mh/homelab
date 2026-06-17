@@ -28,3 +28,6 @@ venv/
 # AI runtime memory artifacts
 .ai/memory/runtime/
 
+# session-guard MCP server deps (restore with `npm install` in that dir)
+scripts/session-guard/mcp/node_modules/
+

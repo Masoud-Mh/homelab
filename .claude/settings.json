@@ -27,6 +27,34 @@
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR/scripts/ai-memory/run-memory-hook.sh\"",
             "timeout": 20
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/scripts/session-guard/run-usage-hook.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/scripts/session-guard/run-usage-hook.sh\"",
+            "timeout": 12
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/scripts/session-guard/run-usage-hook.sh\"",
+            "timeout": 15
           }
         ]
       }

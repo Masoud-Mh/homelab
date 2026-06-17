@@ -1,7 +1,13 @@
 # Active Context
 
 ## Current objective
-Implement frontend roadmap (React + Vite + TypeScript) in parity-first mode. (PHASE 1 + PHASE 2 BASELINE COMPLETED)
+Operate session-limit-aware and migrate the stack toward the architecture principles
+(`docs/architecture-principles.md`). Session-guard system + governance: DONE (2026-06-17).
+Next: architecture remediation roadmap (`docs/architecture-roadmap.md`), then resume the
+frontend roadmap / section-5 debt batches.
+
+Prior objective (still standing): implement frontend roadmap (React + Vite + TypeScript)
+in parity-first mode. (PHASE 1 + PHASE 2 BASELINE COMPLETED)
 
 ## In-progress focus
 - Frontend migrated from static `app/frontend/index.html` to React component structure in `app/frontend/src/components`.
@@ -13,11 +19,13 @@ Implement frontend roadmap (React + Vite + TypeScript) in parity-first mode. (PH
 - Added deploy execution runbook: `docs/frontend-deploy-smoke-runbook.md` for workflow trigger, smoke checks, and rollback path.
 
 ## Next actions
-1. Rotate exposed local tokens manually (P0 security, still manual-guided).
-2. Execute live deploy via manual frontend workflow using `ref=dev`.
-3. Run smoke test checklist from `docs/frontend-deploy-smoke-runbook.md`.
-4. After stable rollout, execute containerized/image-based frontend delivery batch.
-5. Continue technical debt batches from section 5 after frontend stabilization.
+1. Architecture roadmap Phase 1: de-hardcode host paths (`SITE_ROOT`/`REPO_ROOT` env, defaults unchanged) — see `docs/architecture-roadmap.md`.
+2. Phase 2: containerize frontend as an OCI image (parity-first, GHCR push) — also satisfies the long-deferred image-based frontend delivery batch.
+3. Phase 3: add Vitest (frontend) + pytest (backend) and wire into CI.
+4. Rotate exposed local tokens manually (P0 security, still manual-guided).
+5. Continue section-5 technical debt batches.
+
+NOTE: each action is session-limit aware — check usage before fan-out; auto-sleep through a reset if needed (see CLAUDE.md "Session-limit awareness").
 
 ## Ownership
 Primary developer/maintainer is now Claude Code (handoff from GitHub Copilot, 2026-06-17).

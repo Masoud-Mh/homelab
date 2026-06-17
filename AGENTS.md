@@ -13,6 +13,16 @@ This repository is configured for autonomous agents. Follow this contract in eve
 - Keep Traefik + Cloudflare routing behavior intact unless a task explicitly asks for change.
 - Prefer root-cause fixes over temporary patches.
 - Validate each batch with the narrowest relevant checks first.
+- **Be session-limit aware (Claude Max).** Check usage at session start, before any
+  subagent fan-out, and between major tasks (`session-guard` MCP `get_usage` or
+  `scripts/session-guard/check-usage.sh`). Reason adaptively (remaining session+week %,
+  model in use, task size, fan-out — thresholds are advisory). If work can't finish within
+  the window, persist state to `.ai/memory/active-context.md` and **auto-sleep until reset,
+  then resume** (`wait_for_reset` / `wait-until-reset.sh` in background). Details in
+  `CLAUDE.md` → "Session-limit awareness".
+- **Hold all work to** `docs/architecture-principles.md` (microservices, scalability, K8s
+  readiness, portability, test/validation); remediation phases in
+  `docs/architecture-roadmap.md`.
 
 ## Required memory protocol
 - Read these files before coding:
