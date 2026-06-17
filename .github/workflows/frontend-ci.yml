@@ -43,6 +43,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Test
+        run: npm run test
+
   image-pr-build:
     name: Image build (no push)
     if: github.event_name == 'pull_request'

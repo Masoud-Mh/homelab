@@ -4,7 +4,7 @@
 - Phase 0 (Session-limit awareness & governance): COMPLETED (2026-06-17)
 - Phase 1 (De-hardcode host paths): DONE (2026-06-17) — SITE_ROOT/SITE_DEV_ROOT in compose + deploy-frontend.sh, vars.REPO_ROOT in deploy workflows; defaults unchanged, verified via `docker compose config`, infra-reviewer PASS, rsync-target guard added
 - Phase 2 (Containerize frontend as OCI image): IN PROGRESS — Dockerfile + .dockerignore + frontend-ci image build/push (GHCR homelab-frontend) DONE & locally verified (2026-06-17); REMAINING: guarded compose cutover from host-mount to image after CI publishes from main
-- Phase 3 (Vitest + pytest harness): TODO
+- Phase 3 (Vitest + pytest harness): DONE (2026-06-17) — frontend Vitest+jsdom AboutSection smoke test wired into frontend-ci; backend pytest /+/healthz contracts (requirements-dev.txt, dev-only) + test job in backend-ci; verified locally (1 FE + 2 BE pass), build gate green
 - Phase 4 (K8s/Helm manifests): TODO — blocked on 1–3
 
 ## Frontend roadmap — source: `docs/frontend-react-vite-ts-roadmap.md`

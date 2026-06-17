@@ -13,6 +13,27 @@ permissions:
   packages: write
 
 jobs:
+  test:
+    name: Backend tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps (runtime + dev)
+        working-directory: app/backend
+        run: pip install -r requirements-dev.txt
+
+      - name: Run tests
+        working-directory: app/backend
+        run: pytest -q
+
   pr-build:
     name: PR build (no push)
     if: github.event_name == 'pull_request'

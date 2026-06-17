@@ -62,7 +62,16 @@ locally; CI builds+pushes on the frontend path; routing parity verified before f
 
 </details>
 
-## Phase 3 — Test & validation harness — **TODO**  *(principle 5)*
+## Phase 3 — Test & validation harness — **DONE (2026-06-17)**  *(principle 5)*
+
+Frontend: Vitest + @testing-library/react + jsdom; `AboutSection` smoke test;
+`npm run test` wired into `frontend-ci` build job (test files excluded from the
+production `tsc` gate). Backend: pytest + httpx `test_main.py` (`/` + `/healthz`
+contracts); `requirements-dev.txt` (dev-only, out of the runtime image); `test` job
+added to `backend-ci`. Verified locally: 1 frontend test + 2 backend tests pass; build
+gate still green.
+
+<details><summary>Original phase scope</summary>
 
 **Why.** Only gate today is build/typecheck; no behavior is actually tested.
 
@@ -76,10 +85,12 @@ No behavior change.
 **Done when.** `npm run test` (Vitest) and `pytest` pass locally and in CI; build/typecheck
 still green.
 
-## Phase 4 — Kubernetes manifests / Helm — **TODO (blocked on Phases 1–3)**  *(principles 2, 3)*
+</details>
+
+## Phase 4 — Kubernetes manifests / Helm — **TODO (P2 cutover + this remain)**  *(principles 2, 3)*
 
 **Why.** Real K8s readiness once paths are parameterized, the frontend is an image, and
-tests gate changes.
+tests gate changes. (P1 ✅, P2 image ✅ / cutover pending, P3 ✅.)
 
 **Touches.** new `k8s/` or a Helm chart: Deployments + Services + Ingress mapping the
 current Traefik routes, ConfigMaps/Secrets for env, liveness/readiness probes.
