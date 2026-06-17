@@ -79,3 +79,14 @@ These come from `AGENTS.md` and `.github/copilot-instructions.md` and apply to a
 This repo carries its own cross-session memory under `.ai/memory/` (separate from Claude Code's own memory). A SessionStart/Stop/PreCompact/SubagentStop hook (`.github/hooks/ai-memory.json` → `scripts/ai-memory/run-memory-hook.sh`) writes runtime context there. When doing substantial autonomous work, read `.ai/memory/active-context.md`, `decisions.md`, `roadmap-status.md`, and `batch-status.md` first, and update them when done. `runtime/` artifacts are gitignored.
 
 The current work program (per `AGENTS.md`): (1) the frontend React/Vite/TS roadmap in `docs/frontend-react-vite-ts-roadmap.md`, then (2) technical-debt batches in section 5 of `docs/project-current-state-report.md`.
+
+## Claude Code ownership setup
+
+Claude Code is the primary maintainer. Project-scoped Claude Code config lives in `.claude/`:
+
+- **Subagents** (`.claude/agents/`): `deploy-operator` (deploy + smoke flow, careful with live containers/`/srv/site`), `infra-reviewer` (reviews `infra/**`, `docker-compose*.yml`, `*.sh`, `workflows/**` for routing integrity + secret safety), `frontend-dev` (scoped `app/frontend/**`, strict-TS/`VITE_`/effect-cleanup conventions).
+- **Slash commands** (`.claude/commands/`): `/stack-status`, `/deploy-frontend [ref]`, `/deploy-backend [tag]`, `/smoke-test`, `/sync-memory`.
+- **Memory bridge**: `.ai/memory/` stays the canonical git-tracked state. A SessionStart hook in `.claude/settings.json` runs `scripts/ai-memory/run-memory-hook.sh` so that context auto-loads. Durable facts are mirrored into Claude Code's native memory; `/sync-memory` keeps both current (ending with the `[MEMORY_UPDATED]` marker).
+- **Runbooks**: `docs/frontend-deploy-smoke-runbook.md` (deploy + smoke), `docs/credential-rotation-runbook.md` (P0 token rotation — manual).
+
+The legacy Copilot-era setup (`.github/agents`, `.github/instructions`, `.github/prompts`, `.github/copilot-instructions.md`) is retained for reference.
