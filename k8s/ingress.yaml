@@ -1,0 +1,51 @@
+# Ingress mapping the public hostnames to services — the K8s equivalent of the
+# Traefik router labels in app/docker-compose.yml:
+#   site router  (masoud-mh.com / www.masoud-mh.com)        -> frontend:80
+#   api router   (api.masoud-mh.com)                        -> backend:8000
+#
+# TLS note: today Cloudflare terminates TLS at the edge and the tunnel reaches Traefik
+# over HTTP, so no TLS block here (HTTP-at-cluster parity). In a standalone cluster,
+# add cert-manager + a tls: section, or keep Cloudflare in front.
+#
+# ingressClassName: traefik matches the current reverse proxy (Traefik supports the
+# standard Ingress API). Swap to nginx/another controller without touching services.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homelab
+  namespace: homelab
+  labels:
+    app.kubernetes.io/part-of: homelab-stack
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: masoud-mh.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    - host: www.masoud-mh.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+    - host: api.masoud-mh.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 8000

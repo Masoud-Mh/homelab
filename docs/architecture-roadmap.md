@@ -93,20 +93,19 @@ still green.
 
 </details>
 
-## Phase 4 — Kubernetes manifests / Helm — **TODO (P2 cutover + this remain)**  *(principles 2, 3)*
+## Phase 4 — Kubernetes manifests — **DONE (draft, 2026-06-17)**  *(principles 2, 3)*
 
-**Why.** Real K8s readiness once paths are parameterized, the frontend is an image, and
-tests gate changes. (P1 ✅, P2 image ✅ / cutover pending, P3 ✅.)
+Drafted `k8s/` (namespace, backend ConfigMap+Deployment+Service, frontend
+Deployment+Service, Ingress, README). Both Deployments run the GHCR images; probes use
+the same health semantics as the Docker healthchecks; Ingress maps the public hosts to
+services 1:1 with the Traefik routers (mapping table in `k8s/README.md`). Validated
+structurally (all docs parse; Deployment selectors ⊆ template labels; Services select
+their Deployments; Ingress backends reference real service ports).
 
-**Touches.** new `k8s/` or a Helm chart: Deployments + Services + Ingress mapping the
-current Traefik routes, ConfigMaps/Secrets for env, liveness/readiness probes.
-
-**Approach.** Draft and validate against the routing contract first (document the mapping
-from Traefik labels → Ingress). Do **not** implement until 1–3 are green.
-
-**Done when.** Manifests render (`kubectl --dry-run` / `helm template`) and the
-route/probe mapping is reviewed against today's Traefik config. (Live cluster deploy is
-out of scope until a cluster exists.)
+**Not deployed** — no cluster yet; production stays on Docker Compose. Remaining before a
+real deploy (documented in `k8s/README.md`): a cluster + ingress controller, a `ghcr-pull`
+secret, DNS/Cloudflare pointing at the cluster, image pinning to `sha-<sha>`, and a
+cluster-side `kubectl --dry-run` (no `kubectl`/`helm` on the homelab host today).
 
 ---
 
