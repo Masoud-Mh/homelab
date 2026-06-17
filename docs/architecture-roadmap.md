@@ -31,7 +31,20 @@ behavior is byte-for-byte unchanged. Parameterize, don't relocate.
 against a temp `SITE_ROOT`; Traefik routers/services + cloudflared verified unchanged;
 `curl https://api.masoud-mh.com/healthz` still green. Run `infra-reviewer` before PR.
 
-## Phase 2 — Containerize the frontend as an OCI image — **TODO**  *(principles 1, 3, 4)*
+## Phase 2 — Containerize the frontend as an OCI image — **IN PROGRESS**  *(principles 1, 3, 4)*
+
+**Done (2026-06-17):** multi-stage `app/frontend/Dockerfile` (node:22-alpine build →
+nginx:alpine serving baked-in `dist/`, healthcheck) + `.dockerignore`; `frontend-ci`
+extended with `image-pr-build` (no push) and `image-build-and-push` (GHCR
+`homelab-frontend`, mirrors backend-ci). Locally verified: build succeeds, container
+serves HTTP 200 with the prod `VITE_API_BASE_URL` baked in.
+
+**Remaining (guarded cutover):** once `image-build-and-push` publishes from `main`,
+verify the image against the live site, then flip `app/docker-compose.yml` frontend from
+the `${SITE_ROOT}/frontend` host mount to `image: ghcr.io/.../homelab-frontend:<tag>`
+(keep host-sync as rollback). Do not flip before an image exists in GHCR.
+
+<details><summary>Original phase scope</summary>
 
 **Why.** nginx serves host-synced files (`deploy-frontend.sh` rsyncs `dist/` →
 `/srv/site/frontend`). That host coupling is the main K8s blocker.
@@ -46,6 +59,8 @@ rollback to host-sync available.
 
 **Done when.** `docker build app/frontend` succeeds; container serves the built site
 locally; CI builds+pushes on the frontend path; routing parity verified before flip.
+
+</details>
 
 ## Phase 3 — Test & validation harness — **TODO**  *(principle 5)*
 
