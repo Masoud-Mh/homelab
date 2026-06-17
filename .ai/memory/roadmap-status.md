@@ -5,7 +5,7 @@
 - Phase 1 (De-hardcode host paths): DONE (2026-06-17) — SITE_ROOT/SITE_DEV_ROOT in compose + deploy-frontend.sh, vars.REPO_ROOT in deploy workflows; defaults unchanged, verified via `docker compose config`, infra-reviewer PASS, rsync-target guard added
 - Phase 2 (Containerize frontend as OCI image): DONE (2026-06-17) — Dockerfile + frontend-ci GHCR push; CUTOVER done (compose uses image:${FRONTEND_TAG:-latest}; deploy-frontend.sh/.yml pull+recreate like backend; host-sync kept as commented rollback). Verify caught a defect: frontend .env.production was gitignored so CI built without VITE_API_BASE_URL — fixed by tracking the (public) VITE env files via .gitignore negation; CI-equivalent build confirmed URL baked. Latent until manual deploy.
 - Phase 3 (Vitest + pytest harness): DONE (2026-06-17) — frontend Vitest+jsdom AboutSection smoke test wired into frontend-ci; backend pytest /+/healthz contracts (requirements-dev.txt, dev-only) + test job in backend-ci; verified locally (1 FE + 2 BE pass), build gate green
-- Phase 4 (K8s/Helm manifests): TODO — blocked on 1–3
+- Phase 4 (K8s manifests): DONE (draft, 2026-06-17) — k8s/ namespace+backend(ConfigMap/Deploy/Svc)+frontend(Deploy/Svc)+Ingress+README; GHCR images, probes mirror healthchecks, Ingress maps public hosts 1:1 to Traefik routers; structurally validated. NOT deployed (no cluster); prod stays on Compose. Pre-deploy needs: cluster+ingress controller, ghcr-pull secret, DNS, sha tag pinning, kubectl --dry-run.
 
 ## Frontend roadmap — source: `docs/frontend-react-vite-ts-roadmap.md`
 
