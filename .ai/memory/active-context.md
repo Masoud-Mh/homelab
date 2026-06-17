@@ -18,14 +18,18 @@ in parity-first mode. (PHASE 1 + PHASE 2 BASELINE COMPLETED)
 - Follow-up TS diagnostics fix applied: `main.tsx` now uses named imports, and `tsconfig.node.json` handles `vite.config.ts` resolution.
 - Added deploy execution runbook: `docs/frontend-deploy-smoke-runbook.md` for workflow trigger, smoke checks, and rollback path.
 
-## Next actions
-1. Architecture roadmap Phase 1: de-hardcode host paths (`SITE_ROOT`/`REPO_ROOT` env, defaults unchanged) — see `docs/architecture-roadmap.md`.
-2. Phase 2: containerize frontend as an OCI image (parity-first, GHCR push) — also satisfies the long-deferred image-based frontend delivery batch.
-3. Phase 3: add Vitest (frontend) + pytest (backend) and wire into CI.
-4. Rotate exposed local tokens manually (P0 security, still manual-guided).
-5. Continue section-5 technical debt batches.
+## Architecture roadmap — ALL PHASES MERGED TO main (2026-06-17)
+P0 session-guard+governance, P1 de-hardcode paths, P2 frontend OCI image + cutover,
+P3 Vitest+pytest, P4 k8s draft — all merged (PRs #3, #4, #5). main == dev. CI publishes
+homelab-frontend + homelab-backend images to GHCR.
 
-NOTE: each action is session-limit aware — check usage before fan-out; auto-sleep through a reset if needed (see CLAUDE.md "Session-limit awareness").
+## Next actions
+1. **Activate the frontend image cutover when ready** (it is LATENT — live site still runs the old host-mount container). Trigger the `deploy-frontend` workflow (workflow_dispatch) with a `FRONTEND_TAG` (e.g. `latest` or a `sha-<sha>`); it pulls the image + recreates the container. Smoke-test after (`/smoke-test`). Rollback = revert compose to the commented host-mount + redeploy.
+2. P4 k8s/ is a DRAFT (not deployed; no cluster). Pre-deploy needs in `k8s/README.md`.
+3. Rotate exposed local tokens manually (P0 security, still manual-guided).
+4. Continue section-5 technical debt batches.
+
+NOTE: each action is session-limit aware — check usage before fan-out; auto-sleep through a reset if needed (see CLAUDE.md "Session-limit awareness"). Reminder: ccusage proxy over-reads near a block boundary; trust authoritative `claude -p /usage` (this session: proxy flagged defer at 92% while authoritative was 14%).
 
 ## Ownership
 Primary developer/maintainer is now Claude Code (handoff from GitHub Copilot, 2026-06-17).
