@@ -4,6 +4,13 @@
 .env.*
 **/.env
 **/*.env
+
+# EXCEPTION: the frontend's Vite env files are PUBLIC build config — VITE_* values
+# are baked into the client JS bundle by design, so they are not secrets. Track them
+# so CI image builds get VITE_API_BASE_URL (host-sync built on-server and saw the
+# local copy; image builds use a clean checkout and need these committed).
+!app/frontend/.env.production
+!app/frontend/.env.development
 **/acme.json
 **/*token*
 **/*secret*

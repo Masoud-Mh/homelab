@@ -1,12 +1,16 @@
 services:
   frontend:
-    image: nginx:alpine
+    # Image-based delivery: CI (frontend-ci) builds & pushes this image to GHCR;
+    # the server just pulls it (like the backend). FRONTEND_TAG defaults to latest.
+    image: ghcr.io/masoud-mh/homelab-frontend:${FRONTEND_TAG:-latest}
     # container_name: site_frontend
     restart: unless-stopped
     networks:
       - traefik_proxy
-    volumes:
-      - ${SITE_ROOT:-/srv/site}/frontend:/usr/share/nginx/html:ro
+    # ROLLBACK (host-sync): to revert to serving files from the host disk, comment
+    # out the image: line above (use `image: nginx:alpine`) and re-enable this mount:
+    #   volumes:
+    #     - ${SITE_ROOT:-/srv/site}/frontend:/usr/share/nginx/html:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.site.rule=Host(`site.local`) || Host(`masoud-mh.com`) || Host(`www.masoud-mh.com`)"

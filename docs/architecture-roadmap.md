@@ -31,18 +31,24 @@ behavior is byte-for-byte unchanged. Parameterize, don't relocate.
 against a temp `SITE_ROOT`; Traefik routers/services + cloudflared verified unchanged;
 `curl https://api.masoud-mh.com/healthz` still green. Run `infra-reviewer` before PR.
 
-## Phase 2 — Containerize the frontend as an OCI image — **IN PROGRESS**  *(principles 1, 3, 4)*
+## Phase 2 — Containerize the frontend as an OCI image — **DONE (2026-06-17)**  *(principles 1, 3, 4)*
 
-**Done (2026-06-17):** multi-stage `app/frontend/Dockerfile` (node:22-alpine build →
+**Image + CI:** multi-stage `app/frontend/Dockerfile` (node:22-alpine build →
 nginx:alpine serving baked-in `dist/`, healthcheck) + `.dockerignore`; `frontend-ci`
 extended with `image-pr-build` (no push) and `image-build-and-push` (GHCR
-`homelab-frontend`, mirrors backend-ci). Locally verified: build succeeds, container
-serves HTTP 200 with the prod `VITE_API_BASE_URL` baked in.
+`homelab-frontend`, mirrors backend-ci). Published from `main`.
 
-**Remaining (guarded cutover):** once `image-build-and-push` publishes from `main`,
-verify the image against the live site, then flip `app/docker-compose.yml` frontend from
-the `${SITE_ROOT}/frontend` host mount to `image: ghcr.io/.../homelab-frontend:<tag>`
-(keep host-sync as rollback). Do not flip before an image exists in GHCR.
+**Cutover (done):** `app/docker-compose.yml` frontend now runs
+`image: ghcr.io/.../homelab-frontend:${FRONTEND_TAG:-latest}` (host mount kept as a
+commented rollback); `deploy-frontend.sh` + `deploy-frontend.yml` rewritten to
+pull+recreate by `FRONTEND_TAG`, mirroring the backend. Latent until a manual deploy.
+
+**Defect caught & fixed during verify:** `.env.production`/`.env.development` were
+gitignored (`.env.*`), so CI's clean checkout built the image WITHOUT
+`VITE_API_BASE_URL` (host-sync only worked because it built on-server where the local
+file existed). Since `VITE_*` is public client config, these files are now tracked (a
+`.gitignore` negation; backend `.env*` stays ignored). Verified via a tracked-files-only
+(CI-equivalent) build: image serves HTTP 200 with `https://api.masoud-mh.com` baked in.
 
 <details><summary>Original phase scope</summary>
 
