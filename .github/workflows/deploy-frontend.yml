@@ -31,5 +31,5 @@ jobs:
 
       - name: Deploy frontend
         run: |
-          cd /data/repos/homelab-stack/app
+          cd "${{ vars.REPO_ROOT || '/data/repos/homelab-stack' }}/app"
           ./deploy-frontend.sh

@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - /srv/site-dev/frontend:/usr/share/nginx/html:ro
+      - ${SITE_DEV_ROOT:-/srv/site-dev}/frontend:/usr/share/nginx/html:ro
 
   backend:
     networks: []
