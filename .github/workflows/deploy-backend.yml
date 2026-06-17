@@ -55,5 +55,5 @@ jobs:
         env:
           BACKEND_TAG: ${{ steps.tag.outputs.value }}
         run: |
-          cd /data/repos/homelab-stack/app
+          cd "${{ vars.REPO_ROOT || '/data/repos/homelab-stack' }}/app"
           ./deploy-backend.sh

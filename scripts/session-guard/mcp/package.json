@@ -1,0 +1,11 @@
+{
+  "name": "session-guard-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP server exposing Claude Max usage status + auto-sleep for homelab-stack session-guard",
+  "main": "server.mjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  }
+}

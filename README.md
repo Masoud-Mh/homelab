@@ -261,6 +261,17 @@ curl https://api.masoud-mh.com/healthz
 - **Accepts**: Optional tag input (defaults to latest main commit)
 - **Actions**: Pulls image from GHCR and restarts backend container
 
+---
+
+## 🤖 AI Agent Workflow
+
+This repository includes workspace-level agent configuration and memory files for long-running AI execution.
+
+- Setup and usage guide: `docs/ai-agent-execution-guide.md`
+- Always-on instructions: `.github/copilot-instructions.md` and `AGENTS.md`
+- Custom agents and slash prompts: `.github/agents/` and `.github/prompts/`
+- Memory system: `.ai/memory/`
+
 ### Self-Hosted Runner
 Located in `infra/github_action_runner/`:
 - Runs on homelab server

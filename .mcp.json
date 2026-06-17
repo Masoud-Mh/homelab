@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "session-guard": {
+      "command": "node",
+      "args": ["scripts/session-guard/mcp/server.mjs"]
+    }
+  }
+}
