@@ -129,5 +129,6 @@ Claude Code is the primary maintainer. Project-scoped Claude Code config lives i
 - **Slash commands** (`.claude/commands/`): `/stack-status`, `/deploy-frontend [ref]`, `/deploy-backend [tag]`, `/smoke-test`, `/sync-memory`.
 - **Memory bridge**: `.ai/memory/` stays the canonical git-tracked state. A SessionStart hook in `.claude/settings.json` runs `scripts/ai-memory/run-memory-hook.sh` so that context auto-loads. Durable facts are mirrored into Claude Code's native memory; `/sync-memory` keeps both current (ending with the `[MEMORY_UPDATED]` marker).
 - **Runbooks**: `docs/frontend-deploy-smoke-runbook.md` (deploy + smoke), `docs/credential-rotation-runbook.md` (P0 token rotation — manual).
+- **Agent tooling**: `TOOLS.md` records the curated toolset — what's installed (context7, playwright, frontend-design, skill-creator), what's watchlisted with install triggers, and what was rejected and why. Consult/update it before adding MCPs or plugins.
 
 The legacy Copilot-era setup (`.github/agents`, `.github/instructions`, `.github/prompts`, `.github/copilot-instructions.md`) is retained for reference.
